@@ -31,10 +31,12 @@ def get_current_time():
     s = t.strftime('%Y-%m-%dT%H:%M:%S.%f')
     return s[:-3] + 'Z'
 
+
 def delete_all_files_from_folder(folder):
     for root, dirs, files in os.walk(folder):
         for file in files:
             os.remove(os.path.join(root, file))
+
 
 def copy_all_files(filespath):
     os.makedirs(os.path.dirname(os.path.join(filespath, path_twitter, 'random')), exist_ok=True)
@@ -44,9 +46,11 @@ def copy_all_files(filespath):
             destination = os.path.join(filespath, path_twitter, file)
             shutil.copyfile(source, destination)
 
+
 def delete_documents_from_elasticsearch(es, index, filespath):
     es.delete_by_query(index=index,
                        body='{"query": {"match": {"dirname": "' + os.path.join(filespath, path_twitter) + '"}}}')
+
 
 @click.command()
 @click.option('--username', prompt='Twitter username', help='Twitter username. Mandatory.')
