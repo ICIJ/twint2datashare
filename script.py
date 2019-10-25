@@ -18,7 +18,7 @@ import shutil
 #
 # Config
 #
-log_file = 'twitter2datashare.log'
+log_file = 'twint2datashare.log'
 log_level = logging.DEBUG
 path_twitter = 'social_media/twitter'
 tweets_folder = 'tmp'
