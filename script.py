@@ -19,7 +19,6 @@ import os
 #
 log_file = 'twitter2datashare.log'
 log_level = logging.DEBUG
-path_project = '/home/dev/data'
 path_twitter = '/social_media/twitter'
 tweets_folder = 'tweets'
 
@@ -33,15 +32,16 @@ def get_current_time():
     return s[:-3] + 'Z'
 
 @click.command()
-@click.option("--username", prompt="Twitter username", help="Twitter username.")
-@click.option("--index", default='local-datashare', help="Elasticsearch index.")
-@click.option("--host", default='localhost', help="Elasticsearch host.")
-@click.option("--port", default='9200', help="Elasticsearch port.")
-def main(username, index, host, port):
+@click.option('--username', prompt='Twitter username', help='Twitter username. Mandatory.')
+@click.option('--index', default='local-datashare', help='Elasticsearch index. Default: local-datashare.')
+@click.option('--host', default='localhost', help='Elasticsearch host. Default: localhost.')
+@click.option('--port', default='9200', help='Elasticsearch port. Default: 9200.')
+@click.option('--filesPath', default='/home/dev/data', help='Path where files are stored. Default : "/home/dev/data".')
+def main(username, index, host, port, filespath):
     input_file = username + '.json'
     author = 'https://twitter.com/' + username + '/'
     es = elasticsearch.Elasticsearch(hosts=[{'host': host, 'port': port}])
-    delete_documents_from_elasticsearch(es, index)
+    delete_documents_from_elasticsearch(es, index, filespath)
     delete_all_files()
     actions = []
     with open(input_file) as file:
@@ -64,8 +64,8 @@ def main(username, index, host, port):
                     "contentType": "application/json",
                     "language": "ENGLISH",
                     "extractionLevel": 0,
-                    "dirname": path_project + path_twitter,
-                    "path": path_project + path_twitter + '/' + tweet_file,
+                    "dirname": filespath + path_twitter,
+                    "path": filespath + path_twitter + '/' + tweet_file,
                     "extractionDate": get_current_time(),
                     "status": "INDEXED",
                     "nerTags": [],
@@ -85,9 +85,9 @@ def delete_all_files():
         for file in files:
             os.remove(os.path.join(root, file))
 
-def delete_documents_from_elasticsearch(es, index):
+def delete_documents_from_elasticsearch(es, index, filespath):
     es.delete_by_query(index=index,
-                       body='{"query": {"match": {"dirname": "' + path_project + path_twitter + '"}}}')
+                       body='{"query": {"match": {"dirname": "' + filespath + path_twitter + '"}}}')
 
 #
 # Main
