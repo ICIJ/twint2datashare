@@ -1,8 +1,20 @@
+# Goal
+This script is used to import twint json results into [Datashare](https://github.com/ICIJ/datashare).
 
 # What's before all of that ?
 Just use [twint](https://github.com/twintproject/twint) to extract tweets from USERNAME's account
 
 `twint -u USERNAME -o USERNAME.json --json`
+
+
+# How to install it
+## List of requirements
+* click
+* elasticsearch
+
+## Install requirements
+`pip install -r requirements.txt`
+
 
 # How to use it
 ## See help

@@ -12,7 +12,7 @@ from elasticsearch import helpers
 import json
 import logging
 import os
-from shutil import copyfile
+import shutil
 
 #
 # Config
@@ -42,7 +42,7 @@ def copy_all_files(filespath):
         for file in files:
             source = os.path.join(tweets_folder, file)
             destination = os.path.join(filespath, path_twitter, file)
-            copyfile(source, destination)
+            shutil.copyfile(source, destination)
 
 def delete_documents_from_elasticsearch(es, index, filespath):
     es.delete_by_query(index=index,
