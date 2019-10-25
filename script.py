@@ -1,12 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Execution example : python script.py
-# 1. Extract all tweets from user with twint
-# twint -u USERNAME -o USERNAME.json --json
-# Bulk insertion into Elasticsearch
-# https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
-# curl -s -H "Content-Type: application/x-ndjson" -XPOST localhost:9200/_bulk --data-binary "@requests"
-# Elasticsearch API for Python : https://elasticsearch-py.readthedocs.io/en/master/index.html
 
 
 #
@@ -19,7 +12,6 @@ from elasticsearch import helpers
 import json
 import logging
 import os
-import sys
 
 
 #
@@ -27,7 +19,6 @@ import sys
 #
 log_file = 'twitter2datashare.log'
 log_level = logging.DEBUG
-output_file = 'requests'
 path_project = '/home/dev/data'
 path_twitter = '/social_media/twitter'
 tweets_folder = 'tweets'
