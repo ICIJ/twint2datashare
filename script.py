@@ -1,11 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# TODO
-# Use twint output as it is (JSONL instead of JSON)
-# Set path_project as command arg instead of config const
-# Copy tweets into path_twitter
-# Create path_twitter if it does not exist
-# Use twint inside script
 
 
 #
