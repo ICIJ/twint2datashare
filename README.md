@@ -1,7 +1,7 @@
 # WHat's before all of that ?
 Just use [twint](https://github.com/twintproject/twint) to extract tweets from USERNAME's account
 
-`twint -u USERNAME`
+`twint -u USERNAME -o USERNAME.json --json`
 
 # How to use it
 ## See help
