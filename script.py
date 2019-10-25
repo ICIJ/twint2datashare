@@ -37,6 +37,7 @@ def delete_all_files_from_folder(folder):
             os.remove(os.path.join(root, file))
 
 def copy_all_files(filespath):
+    os.makedirs(os.path.dirname(os.path.join(filespath, path_twitter, 'random')), exist_ok=True)
     for root, dirs, files in os.walk(tweets_folder):
         for file in files:
             source = os.path.join(tweets_folder, file)
