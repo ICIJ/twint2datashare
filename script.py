@@ -44,9 +44,9 @@ def main(username, index, host, port):
     delete_documents_from_elasticsearch(es, index)
     delete_all_files()
     actions = []
-    with open(input_file) as json_file:
-        tweets = json.load(json_file)
-        for tweet in tweets:
+    with open(input_file) as file:
+        for line in file:
+            tweet = json.loads(line)
             tweet_file = tweet['tweet'][:40].replace('/', '').replace('"', '') + '_' + str(tweet['id']) + '.json'
             object = {
                 "_op_type": "create",
