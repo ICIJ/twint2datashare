@@ -1,7 +1,19 @@
+#
+# Virtualenv folder
+#
 env
 
+#
+# Logs file
+#
 *.log
 
+#
+# IDE config file
+#
 .idea
 
+#
+# Data file
+#
 *.json
