@@ -4,12 +4,12 @@
 env
 
 #
-# Logs file
+# Logs files
 #
 *.log
 
 #
-# IDE config file
+# Data folder
 #
 .idea
 
