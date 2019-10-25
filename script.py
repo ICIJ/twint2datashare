@@ -13,11 +13,11 @@
 # Libs
 #
 import datetime
+import elasticsearch
+from elasticsearch import helpers
 import json
 import logging
-import os, os.path
-from elasticsearch import Elasticsearch
-from elasticsearch.helpers import bulk
+import os
 import sys
 
 
@@ -54,7 +54,7 @@ def delete_documents_from_elasticsearch(es):
                        body='{"query": {"match": {"dirname": "' + path_project + path_twitter + '"}}}')
 
 def main():
-    es = Elasticsearch()
+    es = elasticsearch.Elasticsearch()
     delete_documents_from_elasticsearch(es)
     delete_all_files()
     actions = []
@@ -92,7 +92,7 @@ def main():
             file = open(os.path.join(tweets_folder, tweet_file), 'w')
             file.write(json.dumps(tweet, indent=4))
             file.close()
-    bulk(es, actions)
+    helpers.bulk(es, actions)
 
 #
 # Main
