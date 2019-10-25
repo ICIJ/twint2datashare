@@ -12,14 +12,14 @@ from elasticsearch import helpers
 import json
 import logging
 import os
-
+from shutil import copyfile
 
 #
 # Config
 #
 log_file = 'twitter2datashare.log'
 log_level = logging.DEBUG
-path_twitter = '/social_media/twitter'
+path_twitter = 'social_media/twitter'
 tweets_folder = 'tweets'
 
 
@@ -30,6 +30,22 @@ def get_current_time():
     t = datetime.datetime.now()
     s = t.strftime('%Y-%m-%dT%H:%M:%S.%f')
     return s[:-3] + 'Z'
+
+def delete_all_files_from_folder(folder):
+    for root, dirs, files in os.walk(folder):
+        for file in files:
+            os.remove(os.path.join(root, file))
+
+def copy_all_files(filespath):
+    for root, dirs, files in os.walk(tweets_folder):
+        for file in files:
+            source = os.path.join(tweets_folder, file)
+            destination = os.path.join(filespath, path_twitter, file)
+            copyfile(source, destination)
+
+def delete_documents_from_elasticsearch(es, index, filespath):
+    es.delete_by_query(index=index,
+                       body='{"query": {"match": {"dirname": "' + os.path.join(filespath, path_twitter) + '"}}}')
 
 @click.command()
 @click.option('--username', prompt='Twitter username', help='Twitter username. Mandatory.')
@@ -42,7 +58,8 @@ def main(username, index, host, port, filespath):
     author = 'https://twitter.com/' + username + '/'
     es = elasticsearch.Elasticsearch(hosts=[{'host': host, 'port': port}])
     delete_documents_from_elasticsearch(es, index, filespath)
-    delete_all_files()
+    delete_all_files_from_folder(tweets_folder)
+    delete_all_files_from_folder(os.path.join(filespath, path_twitter))
     actions = []
     with open(input_file) as file:
         for line in file:
@@ -64,8 +81,8 @@ def main(username, index, host, port, filespath):
                     "contentType": "application/json",
                     "language": "ENGLISH",
                     "extractionLevel": 0,
-                    "dirname": filespath + path_twitter,
-                    "path": filespath + path_twitter + '/' + tweet_file,
+                    "dirname": os.path.join(filespath, path_twitter),
+                    "path": os.path.join(filespath, path_twitter, tweet_file),
                     "extractionDate": get_current_time(),
                     "status": "INDEXED",
                     "nerTags": [],
@@ -79,15 +96,8 @@ def main(username, index, host, port, filespath):
             file.write(json.dumps(tweet, indent=4))
             file.close()
     helpers.bulk(es, actions)
+    copy_all_files(filespath)
 
-def delete_all_files():
-    for root, dirs, files in os.walk(tweets_folder):
-        for file in files:
-            os.remove(os.path.join(root, file))
-
-def delete_documents_from_elasticsearch(es, index, filespath):
-    es.delete_by_query(index=index,
-                       body='{"query": {"match": {"dirname": "' + filespath + path_twitter + '"}}}')
 
 #
 # Main
