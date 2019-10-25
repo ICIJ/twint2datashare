@@ -1,3 +1,8 @@
+# WHat's before all of that ?
+Just use [twint](https://github.com/twintproject/twint) to extract tweets from USERNAME's account
+
+`twint -u USERNAME`
+
 # How to use it
 ## See help
 `python script.py --help`
@@ -9,8 +14,3 @@
 * index : Elasticsearch index name, default is local-datashare.
 * host : Elasticsearch host, default is 9200.
 * port : Easticsearch port, default is 9200.
-
-## WHat's before all of that ?
-Just use [twint](https://github.com/twintproject/twint) to extract tweets from USERNAME's account
-
-`twint -u USERNAME`
