@@ -20,7 +20,7 @@ import shutil
 log_file = 'twitter2datashare.log'
 log_level = logging.DEBUG
 path_twitter = 'social_media/twitter'
-tweets_folder = 'tweets'
+tweets_folder = 'tmp'
 
 
 #
@@ -51,6 +51,9 @@ def delete_documents_from_elasticsearch(es, index, filespath):
     es.delete_by_query(index=index,
                        body='{"query": {"match": {"dirname": "' + os.path.join(filespath, path_twitter) + '"}}}')
 
+def delete_folder(folder):
+    shutil.rmtree(folder)
+
 
 @click.command()
 @click.option('--username', prompt='Twitter username', help='Twitter username. Mandatory.')
@@ -66,6 +69,7 @@ def main(username, index, host, port, filespath):
     delete_all_files_from_folder(tweets_folder)
     delete_all_files_from_folder(os.path.join(filespath, path_twitter))
     actions = []
+    os.makedirs(os.path.dirname(os.path.join(tweets_folder, 'random')), exist_ok=True)
     with open(input_file) as file:
         for line in file:
             tweet = json.loads(line)
@@ -102,6 +106,7 @@ def main(username, index, host, port, filespath):
             file.close()
     helpers.bulk(es, actions)
     copy_all_files(filespath)
+    delete_folder(tweets_folder)
 
 
 #
