@@ -74,7 +74,7 @@ def main(username, index, host, port, filespath):
     with open(input_file) as file:
         for line in file:
             tweet = json.loads(line)
-            tweet_file = tweet['tweet'][:40].replace('/', '').replace('"', '') + '_' + str(tweet['id']) + '.json'
+            tweet_file = tweet['tweet'][:40].replace('/', '').replace('"', '').replace('|', '') + '_' + str(tweet['id']) + '.json'
             object = {
                 "_op_type": "create",
                 "_index": index,
