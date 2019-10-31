@@ -88,7 +88,7 @@ def main(username, index, host, port, filespath):
                         "tika_metadata_url": "https://twitter.com/" + username + "/status/" + str(tweet['id'])
                     },
                     "type": "Document",
-                    "contentType": "application/json",
+                    "contentType": "application/json; twint",
                     "language": "ENGLISH",
                     "extractionLevel": 0,
                     "dirname": os.path.join(filespath, path_twitter),
