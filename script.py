@@ -85,7 +85,8 @@ def main(username, index, host, port, filespath):
                     "metadata": {
                         "tika_metadata_creation_date": tweet['date'] + 'T' + tweet['time'] + 'Z',
                         "tika_metadata_author": author,
-                        "tika_metadata_url": "https://twitter.com/" + username + "/status/" + str(tweet['id'])
+                        "tika_metadata_url": "https://twitter.com/" + username + "/status/" + str(tweet['id']),
+                        "tika_metadata_dc_title": tweet['tweet'][:40]
                     },
                     "type": "Document",
                     "contentType": "application/json; twint",
